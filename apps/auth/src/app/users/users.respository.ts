@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma-clients/auth';
-import { PaginationArgs } from '@jobs-generator/nestjs';
+import { paginate, PaginationArgs } from '@jobs-generator/nestjs';
+import { hash } from 'bcryptjs';
 
 @Injectable()
 export class UsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
   async create(data: Prisma.UserCreateInput) {
-    return this.prismaService.user.create({ data });
+    return this.prismaService.user.create({
+      data: {
+        ...data,
+        password: await hash(data.password, 10),
+      },
+    });
   }
 
   async findMany({ first, after }: PaginationArgs) {
@@ -18,21 +24,6 @@ export class UsersRepository {
     });
 
     // Create edges array
-    const edges = users.slice(0, first).map((user) => ({
-      node: user,
-      cursor: user.id,
-    }));
-
-    // Determine if there's a next page
-    const hasNextPage = users.length > first;
-    const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
-
-    return {
-      edges,
-      pageInfo: {
-        endCursor,
-        hasNextPage,
-      },
-    };
+    return paginate(users, first);
   }
 }
