@@ -8,7 +8,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 export const moduleMetadata: ModuleMetadata = {
   imports: [
-    ConfigModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
