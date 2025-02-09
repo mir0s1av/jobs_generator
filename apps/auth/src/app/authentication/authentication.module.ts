@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ModuleMetadata } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationResolver } from './authentication.resolver';
 import { JwtModule } from '@nestjs/jwt';
@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
-@Module({
+export const moduleMetadata: ModuleMetadata = {
   imports: [
     ConfigModule,
     UsersModule,
@@ -22,5 +22,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   providers: [AuthenticationService, AuthenticationResolver, JwtStrategy],
-})
+};
+
+@Module(moduleMetadata)
 export class AuthenticationModule {}

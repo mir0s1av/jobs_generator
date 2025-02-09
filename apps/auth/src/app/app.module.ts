@@ -19,6 +19,11 @@ import { AuthenticationModule } from './authentication/authentication.module';
         req,
         res,
       }),
+      playground: {
+        settings: {
+          'request.credentials': 'include',
+        },
+      },
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
