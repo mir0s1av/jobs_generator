@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './createUser.dto';
-import { UsersRepository } from './users.respository';
+import { Filters, UsersRepository } from './users.respository';
 import { PaginationArgs } from '@jobs-generator/nestjs';
 
 @Injectable()
@@ -12,5 +12,9 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     return this.usersRepository.create(createUserDto);
+  }
+
+  async findBy(filters: Filters) {
+    return this.usersRepository.findBy(filters);
   }
 }

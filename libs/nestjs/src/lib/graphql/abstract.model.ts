@@ -1,10 +1,12 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 @ObjectType({ isAbstract: true })
 export class AbstractModel {
   @Field(() => ID)
-  id: string;
+  uuid: string;
+
   @Field(() => String)
-  created_at: string;
+  createdAt: Date;
+
   @Field(() => String)
-  updated_at: string;
+  updatedAt: Date;
 }
