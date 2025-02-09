@@ -35,7 +35,6 @@ export class AuthenticationService {
 
   private async verifyUser({ email, password }: LoginInput) {
     try {
-      console.log('RUNNING VERIFY');
       const user = await this.usersService.findBy({ email });
       const authenticated = await compare(password, user.password);
 
