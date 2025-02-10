@@ -1262,6 +1262,13 @@
     "@eslint/core" "^0.10.0"
     levn "^0.4.1"
 
+"@golevelup/nestjs-discovery@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@golevelup/nestjs-discovery/-/nestjs-discovery-4.0.3.tgz#ee9f77d5ba4d9a4663a36f0e35325fefebc34bf9"
+  integrity sha512-8w3CsXHN7+7Sn2i419Eal1Iw/kOjAd6Kb55M/ZqKBBwACCMn4WiEuzssC71LpBMI1090CiDxuelfPRwwIrQK+A==
+  dependencies:
+    lodash "^4.17.21"
+
 "@graphql-tools/merge@9.0.17", "@graphql-tools/merge@^9.0.17":
   version "9.0.17"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.0.17.tgz#57c98b74d6553fb0c053d4a121405d6088e119b6"
@@ -6269,7 +6276,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==
 
-lodash@4.17.21, lodash@^4.17.14:
+lodash@4.17.21, lodash@^4.17.14, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
