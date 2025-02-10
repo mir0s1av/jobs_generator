@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@jobs-generator/nestjs": ["libs/nestjs/src/index.ts"],
-      "@jobs-generator/proto-types": ["libs/types/index.ts"]
+      "@jobs-generator/proto-types": ["libs/types/index.ts"],
+      "@jobs-generator/pulsar": ["libs/pulsar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
