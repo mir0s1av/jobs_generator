@@ -7,6 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationController } from './authentication/authentication.controller';
 
 @Module({
   imports: [
@@ -28,5 +29,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
       autoSchemaFile: true,
     }),
   ],
+  controllers: [],
 })
 export class AppModule {}

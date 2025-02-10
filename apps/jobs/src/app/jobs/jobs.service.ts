@@ -16,7 +16,6 @@ export class JobsService implements OnModuleInit {
     this.jobs = await this.discoveryService.providersWithMetaAtKey<JobMetadata>(
       JOB_METADATA_KEY
     );
-    console.log(this.jobs);
   }
 
   getJobs() {

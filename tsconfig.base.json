@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@jobs-generator/nestjs": ["libs/nestjs/src/index.ts"]
+      "@jobs-generator/nestjs": ["libs/nestjs/src/index.ts"],
+      "@jobs-generator/proto-types": ["libs/types/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

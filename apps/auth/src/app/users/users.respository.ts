@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export type Filters = Omit<
   Prisma.UserWhereUniqueInput,
   'AND' | 'OR' | 'NOT' | 'password'
-> & { email: string };
+>;
 
 @Injectable()
 export class UsersRepository {
@@ -34,6 +34,6 @@ export class UsersRepository {
   }
 
   async findBy(filters: Filters) {
-    return this.prismaService.user.findUniqueOrThrow({ where: filters });
+    return this.prismaService.user.findFirst({ where: filters });
   }
 }

@@ -5,7 +5,7 @@ import { PaginatedType, User } from './models/users.model';
 import { CreateUserDto } from './createUser.dto';
 import { PaginationArgs } from '@jobs-generator/nestjs';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { GqlAuthGuard } from '../authentication/guards/gql-auth.guard';
 
 @Resolver(() => User)
 export class UsersResolver {

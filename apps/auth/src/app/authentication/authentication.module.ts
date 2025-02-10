@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { AuthenticationController } from './authentication.controller';
 
 export const moduleMetadata: ModuleMetadata = {
   imports: [
@@ -21,7 +22,13 @@ export const moduleMetadata: ModuleMetadata = {
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthenticationService, AuthenticationResolver, JwtStrategy],
+  controllers: [AuthenticationController],
+  providers: [
+    AuthenticationController,
+    AuthenticationService,
+    AuthenticationResolver,
+    JwtStrategy,
+  ],
 };
 
 @Module(moduleMetadata)

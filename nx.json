@@ -39,5 +39,19 @@
       },
       "exclude": ["apps/auth-e2e/**/*", "apps/jobs-e2e/**/*"]
     }
-  ]
+  ],
+  "targetDefaults": {
+    "build": {
+      "inputs": ["{projectRoot}/**/*", "{workspaceRoot}/libs/**/*"],
+      "options": {
+        "assets": [
+          {
+            "glob": "*.proto",
+            "input": "libs/proto",
+            "output": "proto"
+          }
+        ]
+      }
+    }
+  }
 }

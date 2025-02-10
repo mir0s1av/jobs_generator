@@ -1,5 +1,4 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
 
 export async function configureApp(app: INestApplication, port: number) {
   app.useGlobalPipes(
@@ -7,7 +6,7 @@ export async function configureApp(app: INestApplication, port: number) {
       whitelist: true,
     })
   );
-  app.use(cookieParser.default());
+  //   app.use(cookieParser.default());
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
@@ -15,4 +14,6 @@ export async function configureApp(app: INestApplication, port: number) {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
+
+  return app;
 }
