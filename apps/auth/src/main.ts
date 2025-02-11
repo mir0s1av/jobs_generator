@@ -11,7 +11,7 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = app.get(ConfigService).getOrThrow('PORT');
-  configureApp(app, port);
+  await configureApp(app, port);
   app.use(cookieParser());
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,

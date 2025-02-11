@@ -30,7 +30,6 @@ export class GqlAuthGuard implements CanActivate, OnModuleInit {
     const reuqest = this.getRequest(context);
 
     const token = reuqest.cookies['Authentication'];
-    console.log({ token });
     if (!token) {
       return false;
     }

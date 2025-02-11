@@ -6,9 +6,10 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@jobs-generator/nestjs';
 
 @Resolver(() => Job)
+@UseGuards(GqlAuthGuard)
 export class JobsResolver {
   constructor(private readonly jobsService: JobsService) {}
-  @UseGuards(GqlAuthGuard)
+
   @Query(() => [Job], { name: 'jobs' })
   async jobs() {
     return this.jobsService.getJobs();
