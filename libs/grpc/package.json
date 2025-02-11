@@ -1,5 +1,5 @@
 {
-  "name": "@libs/graphql",
+  "name": "@libs/grpc",
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {}

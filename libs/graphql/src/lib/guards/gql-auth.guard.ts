@@ -9,9 +9,8 @@ import {
 import { catchError, map, Observable, of } from 'rxjs';
 
 import { ClientGrpc } from '@nestjs/microservices';
-// import { AUTH_SERVICE_NAME, AuthServiceClient } from '../../../../grpc/src';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AUTH_SERVICE_NAME, AuthServiceClient } from 'libs/grpc/src/lib/types';
+import { AUTH_SERVICE_NAME, AuthServiceClient } from '@libs/grpc';
 
 @Injectable()
 export class GqlAuthGuard implements CanActivate, OnModuleInit {
