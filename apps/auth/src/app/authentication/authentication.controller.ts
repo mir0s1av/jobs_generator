@@ -3,7 +3,7 @@ import {
   AuthServiceController,
   AuthServiceControllerMethods,
   User,
-} from '@jobs-generator/proto-types';
+} from 'libs/grpc/src/lib/types';
 import { Controller, UseGuards } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';

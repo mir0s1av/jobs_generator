@@ -1,4 +1,4 @@
-import { AbstractModel, PageInfo } from '@jobs-generator/nestjs';
+import { AbstractModel, PageInfo } from '@libs/graphql';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

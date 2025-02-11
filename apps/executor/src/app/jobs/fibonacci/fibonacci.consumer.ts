@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractPulsarConsumer, PulsarClient } from '@jobs-generator/pulsar';
+
 import { iterate } from 'fibonacci';
 import { FibonacciData } from './fibonacci.interface';
+import { AbstractPulsarConsumer, PulsarClient } from '@libs/pulsar';
 
 @Injectable()
 export class FibonacciConsumer extends AbstractPulsarConsumer<FibonacciData> {

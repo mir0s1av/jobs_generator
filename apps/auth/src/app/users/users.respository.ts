@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma-clients/auth';
-import { paginate, PaginationArgs } from '@jobs-generator/nestjs';
+import { paginate, PaginationArgs } from '@libs/graphql';
 import { hash } from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 export type Filters = Omit<

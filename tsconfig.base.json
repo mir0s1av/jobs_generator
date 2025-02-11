@@ -15,9 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@jobs-generator/nestjs": ["libs/nestjs/src/index.ts"],
-      "@jobs-generator/proto-types": ["libs/types/index.ts"],
-      "@jobs-generator/pulsar": ["libs/pulsar/src/index.ts"]
+      "@libs/graphql": ["libs/graphql/src/index.ts"],
+      "@libs/grpc": ["libs/grpc/src/index.ts"],
+      "@libs/nestjs": ["libs/nestjs/src/index.ts"],
+      "@libs/prisma": ["libs/prisma/src/index.ts"],
+      "@libs/pulsar": ["libs/pulsar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

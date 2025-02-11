@@ -3,18 +3,18 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky",
-    "generate-ts-proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./libs/proto --ts_proto_out=./libs/types/ ./libs/proto/*.proto --ts_proto_opt=nestJs=true"
+    "prepare": "husky"
   },
-  "nx": {
-    "targets": {
-      "generate-ts-proto": {
-        "cashe": true,
-        "inputs": [
-          "{workspaceRoot}/libs/proto/*.proto"
-        ]
-      }
-    }
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "_moduleAliases": {
+    "@libs/grpc": "dist/libs/grpc/main",
+    "@libs/nestjs": "dist/libs/nestjs/main",
+    "@libs/graphql": "dist/libs/graphql/main",
+    "@libs/pulsar": "dist/libs/pulsar/main",
+    "@libs/prisma": "dist/libs/prisma/main"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +42,7 @@
     "graphql-type-json": "^0.3.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
+    "module-alias": "^2.2.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pulsar-client": "^1.12.0",

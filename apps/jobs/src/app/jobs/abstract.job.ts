@@ -1,5 +1,5 @@
 import { Producer } from 'pulsar-client';
-import { PulsarClient, serialize } from '@jobs-generator/pulsar';
+import { PulsarClient, serialize } from '@libs/pulsar';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
