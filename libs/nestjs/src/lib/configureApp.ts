@@ -1,5 +1,5 @@
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
-
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 export async function configureApp(app: INestApplication, port: number) {
   app.useGlobalPipes(
     new ValidationPipe({
@@ -8,10 +8,11 @@ export async function configureApp(app: INestApplication, port: number) {
   );
   //   app.use(cookieParser.default());
   const globalPrefix = 'api';
+  const logger = app.get(Logger);
   app.setGlobalPrefix(globalPrefix);
-
+  app.useLogger(logger);
   await app.listen(port);
-  Logger.log(
+  logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
 

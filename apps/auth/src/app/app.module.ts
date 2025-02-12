@@ -7,10 +7,12 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthenticationController } from './authentication/authentication.controller';
+import { PinoLoggerModule } from '@libs/nestjs';
+import { GqlLoggerPlugin } from '@libs/graphql';
 
 @Module({
   imports: [
+    PinoLoggerModule,
     AuthenticationModule,
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
@@ -20,6 +22,7 @@ import { AuthenticationController } from './authentication/authentication.contro
         req,
         res,
       }),
+      plugins: [new GqlLoggerPlugin()],
       playground: {
         settings: {
           'request.credentials': 'include',
@@ -29,6 +32,5 @@ import { AuthenticationController } from './authentication/authentication.contro
       autoSchemaFile: true,
     }),
   ],
-  controllers: [],
 })
 export class AppModule {}

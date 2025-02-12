@@ -9,7 +9,7 @@ import { configureApp } from '@libs/nestjs';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const port = app.get(ConfigService).getOrThrow('PORT');
   await configureApp(app, port);
 }

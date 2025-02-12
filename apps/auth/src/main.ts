@@ -11,16 +11,18 @@ import { join } from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AUTH_PACKAGE_NAME } from '@libs/grpc';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const port = app.get(ConfigService).getOrThrow('PORT');
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const getVariable = (r: string) => app.get(ConfigService).getOrThrow(r);
+  const port = getVariable('PORT');
   await configureApp(app, port);
   app.use(cookieParser());
   app.connectMicroservice<GrpcOptions>({
-    transport: Transport.GRPC,
     options: {
+      url: getVariable('GRPC_URL'),
       package: AUTH_PACKAGE_NAME,
       protoPath: join(__dirname, '../../libs/grpc/proto/auth.proto'),
     },
+    transport: Transport.GRPC,
   });
   app.startAllMicroservices();
 }

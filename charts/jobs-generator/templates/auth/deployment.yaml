@@ -1,0 +1,36 @@
+{{- if .Values.auth.enabled}}
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.auth.name}}
+  labels:
+    app: {{ .Values.auth.name}}
+spec:
+  replicas: {{ .Values.auth.replicas}}
+  selector: 
+    matchLabels:
+      app: {{ .Values.auth.name}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.auth.name}}
+    spec:
+      containers:
+        - name: {{ .Values.auth.name}}
+          image: {{ .Values.auth.image}}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy}}
+          ports:
+            - containerPort: {{ .Values.auth.port.http}}
+            - containerPort: {{ .Values.auth.port.grpc}}
+          env:
+            {{- include "common.env" . | nindent 12}}
+            - name: PORT
+              value: "{{ .Values.auth.port.http }}"
+            - name: JWT_SECRET
+              value: {{ .Values.auth.jwtSecret }}
+            - name: JWT_EXPIRES_IN
+              value: "{{ .Values.auth.jwt.expirationMs }}"
+            - name: AUTH_GRPC_SERVICE_URL
+              value: "0.0.0.0:{{ .Values.auth.port.grpc }}"
+
+{{- end}}

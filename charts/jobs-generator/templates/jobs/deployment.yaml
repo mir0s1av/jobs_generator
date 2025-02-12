@@ -1,0 +1,27 @@
+{{- if .Values.jobs.enabled}}
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.jobs.name}}
+  labels:
+    app: {{ .Values.jobs.name}}
+spec:
+  replicas: {{ .Values.jobs.replicas}}
+  selector: 
+    matchLabels:
+      app: {{ .Values.jobs.name}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.jobs.name}}
+    spec:
+      containers:
+        - name: {{ .Values.jobs.name}}
+          image: {{ .Values.jobs.image}}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy}}
+          ports:
+            - containerPort: {{ .Values.jobs.port}}
+          env:
+            {{- include "common.env" . | nindent 12}}
+            - name: PORT
+{{- end}}

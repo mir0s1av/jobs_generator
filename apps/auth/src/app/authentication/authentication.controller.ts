@@ -3,15 +3,17 @@ import {
   AuthServiceController,
   AuthServiceControllerMethods,
   User,
-} from 'libs/grpc/src/lib/types';
-import { Controller, UseGuards } from '@nestjs/common';
+} from '@libs/grpc';
+import { Controller, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UsersService } from '../users/users.service';
 import { TokenPayload } from './toke-payload.interface';
+import { GrpcLoggerInterceptor } from '@libs/grpc';
 
 @AuthServiceControllerMethods()
 @Controller()
+@UseInterceptors(GrpcLoggerInterceptor)
 export class AuthenticationController implements AuthServiceController {
   constructor(private readonly usersService: UsersService) {}
   @UseGuards(JwtAuthGuard)
