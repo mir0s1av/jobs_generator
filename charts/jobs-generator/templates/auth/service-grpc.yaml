@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.auth.name}}
 spec:
-  selector: ClsuterIP
+  selector: ClusterIP
     app: {{ .Values.auth.name}}
   ports: 
     - protocol: TCP

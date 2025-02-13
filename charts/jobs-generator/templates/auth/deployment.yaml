@@ -1,36 +1,38 @@
-{{- if .Values.auth.enabled}}
-apiVersion: app/v1
+{{- if .Values.auth.enabled }}
+apiVersion: 'apps/v1'
 kind: Deployment
 metadata:
-  name: {{ .Values.auth.name}}
+  name: {{ .Values.auth.name }}
   labels:
-    app: {{ .Values.auth.name}}
+    app: {{ .Values.auth.name }}
 spec:
-  replicas: {{ .Values.auth.replicas}}
-  selector: 
+  replicas: {{ .Values.auth.replicas }}
+  selector:
     matchLabels:
-      app: {{ .Values.auth.name}}
+      app: {{ .Values.auth.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.auth.name}}
+        app: {{ .Values.auth.name }}
     spec:
-      containers:
-        - name: {{ .Values.auth.name}}
-          image: {{ .Values.auth.image}}
-          imagePullPolicy: {{ .Values.global.imagePullPolicy}}
-          ports:
-            - containerPort: {{ .Values.auth.port.http}}
-            - containerPort: {{ .Values.auth.port.grpc}}
+      initContainers:
+        - name: prisma-migrate
+          image: {{ .Values.auth.image }}
+          imagePullPolicy: {{ .Values.global.imagePolicy }}
+          command: ["sh", "-c"]
+          args:
+            - npx prisma migrate deploy --schema=apps/auth/prisma/schema.prisma
           env:
-            {{- include "common.env" . | nindent 12}}
-            - name: PORT
-              value: "{{ .Values.auth.port.http }}"
-            - name: JWT_SECRET
-              value: {{ .Values.auth.jwtSecret }}
-            - name: JWT_EXPIRES_IN
-              value: "{{ .Values.auth.jwt.expirationMs }}"
-            - name: AUTH_GRPC_SERVICE_URL
-              value: "0.0.0.0:{{ .Values.auth.port.grpc }}"
+            {{- include "auth.env" . | nindent 12 }} # Separate env file
 
-{{- end}}
+      containers:
+        
+        - name: {{ .Values.auth.name }}
+          image: {{ .Values.auth.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.auth.port.http }}
+            - containerPort: {{ .Values.auth.port.grpc }}
+          env:
+            {{- include "auth.env" . | nindent 12 }} # Use shared env file
+{{- end }}
