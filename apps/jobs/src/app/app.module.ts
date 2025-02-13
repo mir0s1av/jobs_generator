@@ -6,9 +6,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PinoLoggerModule } from '@libs/nestjs';
 import { GqlLoggerPlugin } from '@libs/graphql';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
+    UploadsModule,
     PinoLoggerModule,
     ConfigModule.forRoot({ isGlobal: true }),
     JobsModule,
