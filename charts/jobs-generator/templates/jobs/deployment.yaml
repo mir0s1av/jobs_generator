@@ -15,6 +15,16 @@ spec:
       labels:
         app: {{ .Values.jobs.name}}
     spec:
+      initContainers:
+          - name: prisma-migrate
+            image: {{ .Values.jobs.image }}
+            imagePullPolicy: {{ .Values.global.imagePolicy }}
+            command: ["sh", "-c"]
+            args:
+              - npx prisma migrate deploy --schema=apps/jobs/prisma/schema.prisma
+            env:
+              {{- include "jobs.env" . | nindent 12 }} # Separate env file
+
       containers:
         - name: {{ .Values.jobs.name}}
           image: {{ .Values.jobs.image}}
@@ -23,13 +33,13 @@ spec:
             - name: {{ .Values.jobs.volumes.name}}
               mountPath: /apps/jobs/uploads
           ports:
-            - containerPort: {{ .Values.jobs.port}}
+            - containerPort: {{ .Values.jobs.port.http }}
+            - containerPort: {{ .Values.jobs.port.grpc }}
           env:
             {{- include "common.env" . | nindent 12}}
-            - name: PORT
-              value: {{ .Values.jobs.port }}
-            - name: AUTH_GRPC_SERVICE_URL
-              value: "{{ .Values.jobs.grpcAuthService}}"
+            {{- include "jobs.env" . | nindent 12}}
+
+            
       volumes:
         - name: {{ .Values.jobs.volumes.name}}
         persistentVolumeClaim:

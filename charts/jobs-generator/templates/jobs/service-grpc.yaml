@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.jobs.name}}
+  name: "{{ .Values.jobs.name}}-grpc"
   labels:
     app: {{ .Values.jobs.name}}
 spec:
@@ -10,6 +10,6 @@ spec:
     app: {{ .Values.jobs.name}}
   ports: 
     - protocol: TCP
-    - port: {{ .Values.jobs.port}}
-      targetPort: {{ .Values.jobs.port}}
+    - port: {{ .Values.jobs.port.grpc}}
+      targetPort: {{ .Values.jobs.port.grpc}}
 {{- end}}

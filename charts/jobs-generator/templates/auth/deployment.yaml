@@ -26,7 +26,6 @@ spec:
             {{- include "auth.env" . | nindent 12 }} # Separate env file
 
       containers:
-        
         - name: {{ .Values.auth.name }}
           image: {{ .Values.auth.image }}
           imagePullPolicy: {{ .Values.global.imagePullPolicy }}

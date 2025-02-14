@@ -23,7 +23,7 @@ import { JobsController } from './jobs.controller';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {
-            url: configService.getOrThrow('GRPC_SERVICE_URL'),
+            url: configService.getOrThrow('AUTH_GRPC_SERVICE_URL'),
             package: Packages.AUTH_PACKAGE_NAME,
             protoPath: join(__dirname, '../../libs/grpc/proto/auth.proto'),
           },
