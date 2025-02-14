@@ -3,29 +3,32 @@ import { PulsarClient, serialize } from '@libs/pulsar';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
+import { JobExecutationPayload } from '../inerfaces/job-metadata.interface';
 export abstract class AbstractJob<T extends object> {
   private producer: Producer;
   protected abstract messageClass: new () => T;
   constructor(private readonly pulsarClient: PulsarClient) {}
 
-  async execute(data: T, job: string) {
-    await this.validateData(data);
+  async execute({ payload, jobName, uuid }: JobExecutationPayload<T>) {
     if (!this.producer) {
-      this.producer = await this.pulsarClient.createProducer(job);
+      this.producer = await this.pulsarClient.createProducer(jobName);
     }
 
-    if (Array.isArray(data)) {
-      for (const message of data) {
+    if (Array.isArray(payload)) {
+      for (const message of payload) {
         await this.send(message);
       }
       return;
     }
 
-    await this.send(data);
+    this.send(payload);
+    console.log(`Job has been executted :: ${uuid}`);
   }
 
   private async send(data: T) {
-    await this.producer.send({ data: serialize(data) });
+    this.validateData(data).then(() =>
+      this.producer.send({ data: serialize(data) })
+    );
   }
 
   private async validateData(data: T) {

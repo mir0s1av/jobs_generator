@@ -2,40 +2,47 @@
 // versions:
 //   protoc-gen-ts_proto  v2.6.1
 //   protoc               v4.25.1
-// source: auth.proto
+// source: products.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-export interface User {
-  uuid: string;
-  email: string;
+export interface CreateProductRequest {
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  rating: number;
+  description: string;
 }
 
-export interface AuthenticateRequest {
-  token: string;
+export interface CreateProductResponse {}
+
+export interface ProductsServiceClient {
+  createProduct(
+    request: CreateProductRequest
+  ): Observable<CreateProductResponse>;
 }
 
-export interface AuthServiceClient {
-  authenticate(request: AuthenticateRequest): Observable<User>;
+export interface ProductsServiceController {
+  createProduct(
+    request: CreateProductRequest
+  ):
+    | Promise<CreateProductResponse>
+    | Observable<CreateProductResponse>
+    | CreateProductResponse;
 }
 
-export interface AuthServiceController {
-  authenticate(
-    request: AuthenticateRequest
-  ): Promise<User> | Observable<User> | User;
-}
-
-export function AuthServiceControllerMethods() {
+export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ['authenticate'];
+    const grpcMethods: string[] = ['createProduct'];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
         method
       );
-      GrpcMethod('AuthService', method)(
+      GrpcMethod('ProductsService', method)(
         constructor.prototype[method],
         method,
         descriptor
@@ -47,7 +54,7 @@ export function AuthServiceControllerMethods() {
         constructor.prototype,
         method
       );
-      GrpcStreamMethod('AuthService', method)(
+      GrpcStreamMethod('ProductsService', method)(
         constructor.prototype[method],
         method,
         descriptor
@@ -56,4 +63,4 @@ export function AuthServiceControllerMethods() {
   };
 }
 
-export const AUTH_SERVICE_NAME = 'AuthService';
+export const PRODUCTS_SERVICE_NAME = 'ProductsService';

@@ -6,9 +6,10 @@ import { JobsResolver } from './jobs.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { join } from 'path';
-import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@libs/grpc';
+import { Packages, AUTH_SERVICE_NAME } from '@libs/grpc';
 import { PulsarModule } from '@libs/pulsar';
 import { ConfigService } from '@nestjs/config';
+import { LoadProductsJob } from './jobs/products/load-products.job';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ConfigService } from '@nestjs/config';
           transport: Transport.GRPC,
           options: {
             url: configService.getOrThrow('GRPC_SERVICE_URL'),
-            package: AUTH_PACKAGE_NAME,
+            package: Packages.AUTH_PACKAGE_NAME,
             protoPath: join(__dirname, '../../libs/grpc/proto/auth.proto'),
           },
         }),
@@ -29,6 +30,6 @@ import { ConfigService } from '@nestjs/config';
     ]),
     DiscoveryModule,
   ],
-  providers: [FibonacciJob, JobsService, JobsResolver],
+  providers: [FibonacciJob, LoadProductsJob, JobsService, JobsResolver],
 })
 export class JobsModule {}

@@ -10,7 +10,7 @@ COPY jest.preset.js ./
 COPY .eslintrc.json ./
 COPY webpack.*.config.js ./
 
-COPY apps/jobs ./apps/executor
+COPY apps/executor ./apps/executor
 
 
 COPY libs/nestjs ./libs/nestjs

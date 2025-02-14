@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { join } from 'path';
 import * as cookieParser from 'cookie-parser';
-import { AUTH_PACKAGE_NAME } from '@libs/grpc';
+import { Packages } from '@libs/grpc';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const getVariable = (r: string) => app.get(ConfigService).getOrThrow(r);
@@ -19,7 +19,7 @@ async function bootstrap() {
   app.connectMicroservice<GrpcOptions>({
     options: {
       url: getVariable('GRPC_URL'),
-      package: AUTH_PACKAGE_NAME,
+      package: Packages.AUTH_PACKAGE_NAME,
       protoPath: join(__dirname, '../../libs/grpc/proto/auth.proto'),
     },
     transport: Transport.GRPC,
