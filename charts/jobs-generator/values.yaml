@@ -25,6 +25,15 @@ auth:
     secret: uyw4h5fo34875fto7t4o5f7q63o745foq374tdohq3t4o57dt3
     expirationMs: "28800000"
 
+products:
+  name: products
+  enabled: true
+  replicas: 1
+  image: 493516932002.dkr.ecr.eu-central-1.amazonaws.com/jobs-generator/products:latest
+  port:
+    http: 3003
+    grpc: 5001
+
 global:
   imagePullPolicy: Always
 

@@ -33,6 +33,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/charts/jobs-generator/**/*.tpl
 
 # System Files
 .DS_Store

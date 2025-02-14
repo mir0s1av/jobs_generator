@@ -25,4 +25,6 @@ spec:
             {{- include "common.env" . | nindent 12}}
             - name: PORT
               value: {{.Values.executor.port}}
+            - name: PRODUCTS_GRPC_SERVICE_PORT
+              value: "{{ .Values.products.name}}:{{ .Values.products.port.grpc }}"
 {{- end}}

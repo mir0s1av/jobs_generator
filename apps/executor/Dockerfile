@@ -15,9 +15,11 @@ COPY apps/executor ./apps/executor
 
 COPY libs/nestjs ./libs/nestjs
 COPY libs/pulsar ./libs/pulsar
+COPY libs/grpc ./libs/grpc
 
 RUN npm i
 
+RUN apt-get update && apt-get install -y protobuf-compiler
 
 RUN npx nx build executor
 
@@ -28,6 +30,7 @@ WORKDIR /app
 COPY --from=builder /workspace/package.json ./
 COPY --from=builder /workspace/executor/package.json ./apps/executor/package.json
 
+COPY --from=builder /workspace/libs/grpc/package.json ./libs/grpc/package.json
 COPY --from=builder /workspace/libs/pulsar/package.json ./libs/pulsar/package.json
 COPY --from=builder /workspace/libs/nestjs/package.json ./libs/nestjs/package.json
 

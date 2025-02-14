@@ -1,0 +1,39 @@
+{{- if .Values.products.enabled }}
+apiVersion: 'apps/v1'
+kind: Deployment
+metadata:
+  name: {{ .Values.products.name }}
+  labels:
+    app: {{ .Values.products.name }}
+spec:
+  replicas: {{ .Values.products.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.products.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.products.name }}
+    spec:
+      initContainers:
+        - name: drizzle-migrate
+          image: {{ .Values.products.image }}
+          imagePullPolicy: {{ .Values.global.imagePolicy }}
+          command: ["sh", "-c"]
+          args:
+            - |
+              cd apps/products && npx drizzle-kit migrate 
+          env:
+            {{- include "products.env" . | nindent 12 }} # Separate env file
+
+      containers:
+        
+        - name: {{ .Values.products.name }}
+          image: {{ .Values.products.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.products.port.http }}
+            - containerPort: {{ .Values.products.port.grpc }}
+          env:
+            {{- include "products.env" . | nindent 12 }} # Use shared env file
+{{- end }}

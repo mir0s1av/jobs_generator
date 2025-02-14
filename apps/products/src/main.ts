@@ -1,3 +1,4 @@
+require('module-alias/register');
 import * as cookieParser from 'cookie-parser';
 
 import { NestFactory } from '@nestjs/core';
