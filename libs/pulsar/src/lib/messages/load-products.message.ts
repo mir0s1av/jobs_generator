@@ -6,8 +6,9 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { JobMessage } from './jobs.message';
 
-export class LoadProductsMessage {
+export class LoadProductsMessage extends JobMessage {
   @IsNotEmpty()
   @IsString()
   name: string;

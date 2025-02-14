@@ -10,9 +10,12 @@ import { Packages, AUTH_SERVICE_NAME } from '@libs/grpc';
 import { PulsarModule } from '@libs/pulsar';
 import { ConfigService } from '@nestjs/config';
 import { LoadProductsJob } from './jobs/products/load-products.job';
+import { PrismaModule } from './prisma/prisma.module';
+import { JobsController } from './jobs.controller';
 
 @Module({
   imports: [
+    PrismaModule,
     PulsarModule,
     ClientsModule.registerAsync([
       {
@@ -30,6 +33,7 @@ import { LoadProductsJob } from './jobs/products/load-products.job';
     ]),
     DiscoveryModule,
   ],
+  controllers: [JobsController],
   providers: [FibonacciJob, LoadProductsJob, JobsService, JobsResolver],
 })
 export class JobsModule {}

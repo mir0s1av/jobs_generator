@@ -7,9 +7,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PinoLoggerModule } from '@libs/nestjs';
 import { GqlLoggerPlugin } from '@libs/graphql';
 import { UploadsModule } from './uploads/uploads.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     UploadsModule,
     PinoLoggerModule,
     ConfigModule.forRoot({ isGlobal: true }),

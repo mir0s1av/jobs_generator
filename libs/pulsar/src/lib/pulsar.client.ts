@@ -3,11 +3,14 @@ import { ConfigService } from '@nestjs/config';
 import { Client, Consumer, Message, Producer } from 'pulsar-client';
 @Injectable()
 export class PulsarClient implements OnModuleDestroy {
-  constructor(private readonly configService: ConfigService) {}
-  private pulsarClient = new Client({
-    serviceUrl: this.configService.getOrThrow('PULSAR_URL'),
-    operationTimeoutSeconds: 30,
-  });
+  private pulsarClient;
+  constructor(private readonly configService: ConfigService) {
+    this.pulsarClient = new Client({
+      serviceUrl: this.configService.getOrThrow('PULSAR_URL'),
+      operationTimeoutSeconds: 30,
+    });
+  }
+
   private producers: Producer[] = [];
   private consumers: Consumer[] = [];
   async onModuleDestroy() {

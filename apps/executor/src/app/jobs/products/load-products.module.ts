@@ -6,9 +6,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { Packages, PRODUCTS_SERVICE_NAME } from '@libs/grpc';
 import { join } from 'path';
+import { JobsClientModule } from '../jobs-client.module';
 
 @Module({
   imports: [
+    JobsClientModule,
     PulsarModule,
     ClientsModule.registerAsync([
       {

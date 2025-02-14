@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PulsarClient } from './pulsar.client';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  controllers: [],
+  imports: [ConfigModule.forRoot({ isGlobal: true })],
   providers: [PulsarClient],
   exports: [PulsarClient],
 })

@@ -10,15 +10,18 @@ import {
 } from '@golevelup/nestjs-discovery';
 import { JOB_METADATA_KEY } from './decorators/jobs.decorator';
 import { AbstractJob } from './jobs/abstract.job';
-import { ExecuteJobInput } from './dto/execute-job-input.dto';
-import { JobMetadata } from './inerfaces/job-metadata.interface';
+import { JobMetadata, JobStatus } from './inerfaces/job-metadata.interface';
 import { readFileSync } from 'fs';
 import { UPLOAD_PATH } from './uploads/uploads.constants';
+import { JobsRepository } from './jobs.repository';
 
 @Injectable()
 export class JobsService implements OnModuleInit {
   private jobs: DiscoveredClassWithMeta<JobMetadata>[] = [];
-  constructor(private readonly discoveryService: DiscoveryService) {}
+  constructor(
+    private readonly discoveryService: DiscoveryService,
+    private readonly repository: JobsRepository
+  ) {}
   async onModuleInit() {
     this.jobs = await this.discoveryService.providersWithMetaAtKey<JobMetadata>(
       JOB_METADATA_KEY
@@ -29,7 +32,7 @@ export class JobsService implements OnModuleInit {
     return this.jobs.map((job) => job.meta);
   }
 
-  async executeJob({ uuid, data }: any) {
+  async executeJob({ uuid, data }) {
     const job = this.jobs.find((job) => job.meta.uuid === uuid);
 
     if (!job) {
@@ -59,5 +62,30 @@ export class JobsService implements OnModuleInit {
         `Failed to read file :: ${filename}`
       );
     }
+  }
+
+  async acknowledge(jobId: string) {
+    const job = await this.repository.findBy({ uuid: jobId });
+
+    if (!job) {
+      throw new BadRequestException(`Job with ID :: ${jobId} is not found`);
+    }
+    if (job.ended) {
+      return;
+    }
+
+    const updatedJob = await this.repository.update({
+      uuid: jobId,
+      completed: 1,
+    });
+
+    if (updatedJob.completed === job.size) {
+      await this.repository.update({
+        uuid: jobId,
+        ended: new Date(),
+        status: JobStatus.COMPLETED,
+      });
+    }
+    return updatedJob;
   }
 }

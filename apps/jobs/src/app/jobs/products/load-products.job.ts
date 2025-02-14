@@ -2,6 +2,7 @@ import { LoadProductsMessage, PulsarClient } from '@libs/pulsar';
 import { AbstractJob } from '../abstract.job';
 import { Job } from '../../decorators/jobs.decorator';
 import { JobMessageMetadata } from '@libs/nestjs';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Job({
   name: JobMessageMetadata.PRODUCTS_LOAD,
@@ -9,7 +10,7 @@ import { JobMessageMetadata } from '@libs/nestjs';
 })
 export class LoadProductsJob extends AbstractJob<LoadProductsMessage> {
   protected messageClass = LoadProductsMessage;
-  constructor(pulsarClient: PulsarClient) {
-    super(pulsarClient);
+  constructor(pulsarClient: PulsarClient, prismaService: PrismaService) {
+    super(pulsarClient, prismaService);
   }
 }
