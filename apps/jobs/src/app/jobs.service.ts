@@ -14,6 +14,7 @@ import { JobMetadata, JobStatus } from './inerfaces/job-metadata.interface';
 import { readFileSync } from 'fs';
 import { UPLOAD_PATH } from './uploads/uploads.constants';
 import { JobsRepository } from './jobs.repository';
+import { FindJobInput } from './models/find-job.dto';
 
 @Injectable()
 export class JobsService implements OnModuleInit {
@@ -29,7 +30,10 @@ export class JobsService implements OnModuleInit {
   }
 
   getJobs() {
-    return this.jobs.map((job) => job.meta);
+    return this.repository.find();
+  }
+  getJob(input: FindJobInput) {
+    return this.repository.findBy(input);
   }
 
   async executeJob({ uuid, data }) {
@@ -43,12 +47,12 @@ export class JobsService implements OnModuleInit {
         'Job is not an instace of Abstract Job'
       );
     }
-    await job.discoveredClass.instance.execute({
+
+    return job.discoveredClass.instance.execute({
       payload: data.fileName ? this.getFile(data.fileName) : data,
       jobName: job.meta.name,
       uuid,
     });
-    return job.meta;
   }
 
   async getFile(filename?: string) {

@@ -21,7 +21,7 @@ export abstract class AbstractJob<T extends object> {
       this.producer = await this.pulsarClient.createProducer(jobName);
     }
 
-    await this.prismaService.job.create({
+    const job = await this.prismaService.job.create({
       data: {
         name: jobName,
         uuid,
@@ -40,6 +40,7 @@ export abstract class AbstractJob<T extends object> {
 
     this.send({ ...payload, jobId: uuid });
     console.log(`Job has been executted :: ${uuid}`);
+    return job;
   }
 
   private async send(data: T) {

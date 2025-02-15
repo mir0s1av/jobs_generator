@@ -1,4 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { JobStatus } from '../inerfaces/job-metadata.interface';
+
+registerEnumType(JobStatus, {
+  name: 'JobStatus',
+  description: 'Jobs',
+});
 
 @ObjectType()
 export class Job {
@@ -9,4 +15,16 @@ export class Job {
 
   @Field()
   description: string;
+
+  @Field()
+  size: number;
+
+  @Field()
+  started: Date;
+
+  @Field({ nullable: true })
+  ended?: Date;
+
+  @Field(() => JobStatus)
+  status: JobStatus;
 }

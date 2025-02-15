@@ -15,4 +15,7 @@ export class JobsRepository {
       data: payload,
     });
   }
+  async find() {
+    return this.prismaService.job.findMany();
+  }
 }
