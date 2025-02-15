@@ -1,5 +1,6 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { Client, Consumer, Message, Producer } from 'pulsar-client';
 @Injectable()
 export class PulsarClient implements OnModuleDestroy {
@@ -29,6 +30,12 @@ export class PulsarClient implements OnModuleDestroy {
       topic,
       subscription: 'jobber',
       listener,
+      receiverQueueSize: 1000,
+      batchReceivePolice: {
+        maxNumMessages: 100,
+        maxNumBytes: 1024 * 1024 * 10,
+        timeoutMs: 1000,
+      },
     });
     this.consumers.push(consumer);
     return consumer;
@@ -38,6 +45,10 @@ export class PulsarClient implements OnModuleDestroy {
     const producer = await this.pulsarClient.createProducer({
       blockIfQueueFull: true,
       topic,
+      batchingEnabled: true,
+      sendTimeoutMs: 30000,
+      batchingMaxPublishDelayMs: 100,
+      batchingMaxMessages: 1000,
     });
     this.producers.push(producer);
     return producer;

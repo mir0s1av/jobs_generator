@@ -10,8 +10,8 @@ import {
 } from '@libs/pulsar';
 import { Logger } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { Consumer, Message } from 'pulsar-client';
-import { firstValueFrom } from 'rxjs';
+import { Consumer } from 'pulsar-client';
+
 export abstract class JobConsumer<T extends AcknowledgeRequest> {
   private jobsService: JobsServiceClient;
   private consumer!: Consumer;
@@ -26,27 +26,57 @@ export abstract class JobConsumer<T extends AcknowledgeRequest> {
       this.clientGrpc.getService<JobsServiceClient>(JOBS_SERVICE_NAME);
     this.consumer = await this.pulsarClient.createConsumer(
       this.topic,
-      this.listener.bind(this)
+      this.messagelistener.bind(this)
     );
   }
 
-  protected async onMessage(data: T): Promise<void> {
+  // protected async onMessage(data: T): Promise<void> {
+  //   await this.execute(data);
+
+  //   await firstValueFrom(this.jobsService.acknowledge(data));
+  // }
+  protected async onMessage(data: T[]): Promise<void> {
     await this.execute(data);
 
-    await firstValueFrom(this.jobsService.acknowledge(data));
+    this.jobsService.acknowledge({ jobId: data[0].jobId });
   }
 
-  protected abstract execute(data: T): Promise<void>;
+  protected abstract execute(data: T[]): Promise<void>;
 
-  private async listener(message: Message) {
+  // private async listener(message: Message) {
+  //   while (true) {
+  //     try {
+  //       const messages = await this.consumer.batchReceive();
+  //       if (messages.length === 0) continue;
+  //       this.logger.debug(`Received batch of ${messages.length} messages`);
+  //       await Promise.all(
+  //         messages.map((mes) => {
+  //           const data = deserialize<T>(mes.getData());
+  //           this.logger.debug(`Received message :: ${data}`);
+  //           this.onMessage(data);
+  //         })
+  //       );
+  //     } catch (e) {
+  //       this.logger.error(e);
+  //     } finally {
+  //       await this.consumer.acknowledge(message);
+  //     }
+  //   }
+  // }
+
+  private async messagelistener() {
     try {
-      const data = deserialize<T>(message.getData());
-      this.logger.debug(`Received message :: ${data}`);
-      await this.onMessage(data);
+      const messages = await this.consumer.batchReceive();
+      if (messages.length === 0) return;
+      this.logger.debug(`Received batch of ${messages.length} messages`);
+      const batchData = await Promise.all(
+        messages.map((mes) => {
+          return deserialize<T>(mes.getData());
+        })
+      );
+      this.onMessage(batchData);
     } catch (e) {
       this.logger.error(e);
-    } finally {
-      await this.consumer.acknowledge(message);
     }
   }
 }

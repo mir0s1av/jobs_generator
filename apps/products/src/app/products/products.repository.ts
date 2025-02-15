@@ -17,4 +17,8 @@ export class ProductsRepository {
       .values({ ...product, uuid: uuidv4() })
       .returning();
   }
+
+  async createMany(products: Array<CreateProductDto>) {
+    return await this.db.insert(schema.products).values(products).returning();
+  }
 }

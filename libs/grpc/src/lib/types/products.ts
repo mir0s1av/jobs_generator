@@ -19,10 +19,22 @@ export interface CreateProductRequest {
 
 export interface CreateProductResponse {}
 
+export interface CreateProductManyRequest {
+  products: CreateProductRequest[];
+}
+
+export interface CreateProductManyResponse {
+  responses: CreateProductResponse[];
+}
+
 export interface ProductsServiceClient {
   createProduct(
     request: CreateProductRequest
   ): Observable<CreateProductResponse>;
+
+  createProductMany(
+    request: CreateProductManyRequest
+  ): Observable<CreateProductManyResponse>;
 }
 
 export interface ProductsServiceController {
@@ -32,11 +44,18 @@ export interface ProductsServiceController {
     | Promise<CreateProductResponse>
     | Observable<CreateProductResponse>
     | CreateProductResponse;
+
+  createProductMany(
+    request: CreateProductManyRequest
+  ):
+    | Promise<CreateProductManyResponse>
+    | Observable<CreateProductManyResponse>
+    | CreateProductManyResponse;
 }
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ['createProduct'];
+    const grpcMethods: string[] = ['createProduct', 'createProductMany'];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,

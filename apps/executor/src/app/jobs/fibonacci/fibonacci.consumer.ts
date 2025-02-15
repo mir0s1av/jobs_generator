@@ -17,8 +17,10 @@ export class FibonacciConsumer extends JobConsumer<FibonacciMessage> {
     super(JobMessageMetadata.FIBONACCI, pulsarClient, jobsClient);
   }
 
-  protected async execute(data: FibonacciMessage): Promise<void> {
-    const result = iterate(data.iterations);
-    this.logger.log(result);
+  protected async execute(data: FibonacciMessage[]): Promise<void> {
+    const batchResult = await Promise.all(
+      data.map((item) => iterate(item.iterations))
+    );
+    this.logger.log(`Fibonacci messages executed :: ${batchResult}`);
   }
 }

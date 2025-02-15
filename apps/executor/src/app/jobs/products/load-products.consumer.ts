@@ -32,8 +32,12 @@ export class LoadProductsConsumer
       );
     await super.onModuleInit();
   }
-  protected async execute(data: LoadProductsMessage): Promise<void> {
-    await firstValueFrom(this.productsService.createProduct(data));
-    this.logger.log(data);
+  protected async execute(data: Array<LoadProductsMessage>): Promise<void> {
+    const createdProducts = await firstValueFrom(
+      this.productsService.createProductMany({ products: data })
+    );
+    this.logger.log(
+      `Load products messages has been executed :: ` + createdProducts
+    );
   }
 }

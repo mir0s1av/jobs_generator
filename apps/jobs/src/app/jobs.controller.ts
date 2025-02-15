@@ -13,6 +13,7 @@ import { JobsService } from './jobs.service';
 @UseInterceptors(GrpcLoggerInterceptor)
 export class JobsController implements JobsServiceController {
   constructor(private readonly jobsService: JobsService) {}
+
   async acknowledge(request: AcknowledgeRequest) {
     return await this.jobsService.acknowledge(request.jobId);
   }

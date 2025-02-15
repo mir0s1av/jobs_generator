@@ -12,7 +12,13 @@ message CreateProductRequest{
 };
 
 message CreateProductResponse{};
-
+message CreateProductManyRequest {
+    repeated CreateProductRequest products = 1;
+};
+message CreateProductManyResponse {
+    repeated CreateProductResponse responses = 1;
+};
 service ProductsService{
     rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+    rpc CreateProductMany(CreateProductManyRequest) returns (CreateProductManyResponse);
 }
