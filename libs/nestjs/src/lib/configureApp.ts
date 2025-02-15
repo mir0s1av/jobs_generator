@@ -1,13 +1,15 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
-export async function configureApp(app: INestApplication, port: number) {
+export async function configureApp(
+  app: INestApplication,
+  port: number,
+  globalPrefix = 'api'
+) {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
     })
   );
-  //   app.use(cookieParser.default());
-  const globalPrefix = 'api';
   const logger = app.get(Logger);
   app.setGlobalPrefix(globalPrefix);
   app.useLogger(logger);

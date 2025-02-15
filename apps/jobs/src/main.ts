@@ -14,7 +14,7 @@ async function bootstrap() {
   const getVariable = (r: string) => app.get(ConfigService).getOrThrow(r);
   const port = getVariable('PORT');
   app.use(cookieParser.default());
-  configureApp(app, port);
+  configureApp(app, port, 'jobs');
   app.connectMicroservice<GrpcOptions>({
     options: {
       url: getVariable('JOBS_GRPC_SERVICE_URL'),

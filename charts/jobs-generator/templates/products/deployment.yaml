@@ -1,5 +1,5 @@
 {{- if .Values.products.enabled }}
-apiVersion: 'apps/v1'
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.products.name }}
@@ -27,7 +27,6 @@ spec:
             {{- include "products.env" . | nindent 12 }} # Separate env file
 
       containers:
-        
         - name: {{ .Values.products.name }}
           image: {{ .Values.products.image }}
           imagePullPolicy: {{ .Values.global.imagePullPolicy }}

@@ -1,10 +1,17 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: uploads-pvc
-spec:
-  accessMode:
-  - ReadWriteMany
-  resources:
-    resources:
-      storage: 5Gi
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: uploads-pvc
+# spec:
+#   accessMode:
+#   {{- if .Values.persistence.ebs}}
+#   - ReadWriteOnce
+#   {{- else}}
+#   - ReadWriteMany
+#   {{- end}}
+#   resources:
+#     resources:
+#       storage: 5Gi
+# {{- if .Values.persistence.ebs }}
+# storageClassName: ebs-sc
+# {{- end}}

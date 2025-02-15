@@ -1,5 +1,5 @@
 {{- if .Values.executor.enabled}}
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.executor.name}}
@@ -24,7 +24,7 @@ spec:
           env:
             {{- include "common.env" . | nindent 12}}
             - name: PORT
-              value: {{.Values.executor.port}}
+              value: "{{.Values.executor.port}}"
             - name: JOBS_GRPC_SERVICE_PORT
               value: "{{ .Values.jobs.name}}-grpc:{{ .Values.jobs.port.grpc }}"
             - name: PRODUCTS_GRPC_SERVICE_PORT

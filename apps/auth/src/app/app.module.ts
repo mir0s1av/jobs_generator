@@ -22,6 +22,7 @@ import { GqlLoggerPlugin } from '@libs/graphql';
         req,
         res,
       }),
+      useGlobalPrefix: true,
       plugins: [new GqlLoggerPlugin()],
       playground: {
         settings: {

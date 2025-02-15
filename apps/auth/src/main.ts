@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const getVariable = (r: string) => app.get(ConfigService).getOrThrow(r);
   const port = getVariable('PORT');
-  await configureApp(app, port);
+  await configureApp(app, port, 'auth');
   app.use(cookieParser());
   app.connectMicroservice<GrpcOptions>({
     options: {

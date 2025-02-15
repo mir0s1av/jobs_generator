@@ -2,14 +2,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Values.jobs.name}}-grpc"
+  name: "{{ .Values.jobs.name }}-grpc"
   labels:
-    app: {{ .Values.jobs.name}}
+    app: {{ .Values.jobs.name }}
 spec:
-  selector: ClsuterIP
-    app: {{ .Values.jobs.name}}
-  ports: 
-    - protocol: TCP
-    - port: {{ .Values.jobs.port.grpc}}
-      targetPort: {{ .Values.jobs.port.grpc}}
-{{- end}}
+  type: ClusterIP
+  selector:
+    app: {{ .Values.jobs.name }}
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: {{ .Values.jobs.port.grpc }}
+      targetPort: {{ .Values.jobs.port.grpc }}
+{{- end }}

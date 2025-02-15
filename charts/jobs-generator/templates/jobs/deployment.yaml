@@ -1,49 +1,50 @@
-{{- if .Values.jobs.enabled}}
-apiVersion: v1
+{{- if .Values.jobs.enabled }}
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.jobs.name}}
+  name: {{ .Values.jobs.name }}
   labels:
-    app: {{ .Values.jobs.name}}
+    app: {{ .Values.jobs.name }}
 spec:
-  replicas: {{ .Values.jobs.replicas}}
-  selector: 
+  replicas: {{ .Values.jobs.replicas }}
+  selector:
     matchLabels:
-      app: {{ .Values.jobs.name}}
+      app: {{ .Values.jobs.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.jobs.name}}
+        app: {{ .Values.jobs.name }}
     spec:
       initContainers:
-          - name: prisma-migrate
-            image: {{ .Values.jobs.image }}
-            imagePullPolicy: {{ .Values.global.imagePolicy }}
-            command: ["sh", "-c"]
-            args:
-              - npx prisma migrate deploy --schema=apps/jobs/prisma/schema.prisma
-            env:
-              {{- include "jobs.env" . | nindent 12 }} # Separate env file
+        - name: prisma-migrate
+          image: {{ .Values.jobs.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          command: ["sh", "-c"]
+          args:
+            - npx prisma migrate deploy --schema=apps/jobs/prisma/schema.prisma
+          env:
+            {{- include "jobs.env" . | nindent 12 }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
 
       containers:
-        - name: {{ .Values.jobs.name}}
-          image: {{ .Values.jobs.image}}
-          imagePullPolicy: {{ .Values.global.imagePullPolicy}}
+        - name: {{ .Values.jobs.name }}
+          image: {{ .Values.jobs.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
           volumeMounts:
-            - name: {{ .Values.jobs.volumes.name}}
+            - name: {{ .Values.jobs.volumes.name }}
               mountPath: /apps/jobs/uploads
           ports:
             - containerPort: {{ .Values.jobs.port.http }}
             - containerPort: {{ .Values.jobs.port.grpc }}
           env:
-            {{- include "common.env" . | nindent 12}}
-            {{- include "jobs.env" . | nindent 12}}
+            {{- include "common.env" . | nindent 12 }}
+            {{- include "jobs.env" . | nindent 12 }}
 
-            
       volumes:
-        - name: {{ .Values.jobs.volumes.name}}
-        persistentVolumeClaim:
-          claimName: volume-pvc
-      
+        - name: {{ .Values.jobs.volumes.name }}
+          persistentVolumeClaim:
+            claimName: volume-pvc
 
-{{- end}}
+{{- end }}

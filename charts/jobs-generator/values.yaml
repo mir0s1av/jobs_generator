@@ -37,12 +37,20 @@ products:
     http: 3003
     grpc: 5001
 
+ingress:
+  aws: false
+
+persistence:
+  ebs: false
+
 global:
   imagePullPolicy: Always
 
 pulsar:
   namespace: pulsar
   namespaceCreate: true
+  components:
+    proxy: false
   zookeeper:
     replicaCount: 1
     podMonitor:
@@ -59,7 +67,6 @@ pulsar:
     podMonitor:
       enabled: false
   proxy:
-    replicaCount: 1
     podMonitor:
       enabled: false
   kube-prometheus-stack:
