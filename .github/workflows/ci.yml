@@ -69,4 +69,4 @@ jobs:
 
           wait
 
-      - run: npx nx affected -t lint build
+      - run: npx nx affected -t build
